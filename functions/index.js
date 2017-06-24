@@ -39,6 +39,7 @@ exports.__esModule = true;
 var functions = require("firebase-functions");
 var fs = require("fs");
 var jsdom = require("jsdom");
+var index_1 = require("./render/index");
 exports.index = functions.https.onRequest(function (request, response) { return __awaiter(_this, void 0, void 0, function () {
     var _a, _b;
     return __generator(this, function (_c) {
@@ -48,7 +49,6 @@ exports.index = functions.https.onRequest(function (request, response) { return 
                 return [4 /*yield*/, ssr()];
             case 1:
                 _b.apply(_a, [_c.sent()]);
-                console.log("kk");
                 return [2 /*return*/];
         }
     });
@@ -58,18 +58,12 @@ function ssr() {
         var html_string, dom, react_app;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    console.log("aa");
-                    return [4 /*yield*/, getFile("index.html")];
+                case 0: return [4 /*yield*/, getFile("index.html")];
                 case 1:
                     html_string = _a.sent();
-                    console.log("ii");
                     dom = new jsdom.JSDOM(html_string);
-                    console.log("uu");
                     react_app = dom.window.document.getElementById("react-app");
-                    console.log("ee");
-                    react_app.textContent = "今日は雨です";
-                    console.log("oo");
+                    react_app.innerHTML = index_1.IndexComponent.toString();
                     return [2 /*return*/, dom.serialize()];
             }
         });
@@ -82,6 +76,7 @@ function getFile(path) {
         });
     });
 }
-// main().then(() => {
+// ssr().then((d) => {
+//     console.log(d);
 //     process.exit();
 // }); 
