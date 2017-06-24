@@ -38,22 +38,43 @@ var _this = this;
 exports.__esModule = true;
 var functions = require("firebase-functions");
 var fs = require("fs");
+var jsdom = require("jsdom");
 exports.index = functions.https.onRequest(function (request, response) { return __awaiter(_this, void 0, void 0, function () {
-    var index;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, getFile("index.html")];
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _b = (_a = response).send;
+                return [4 /*yield*/, ssr()];
             case 1:
-                index = _a.sent();
-                response.send(index);
+                _b.apply(_a, [_c.sent()]);
+                console.log("kk");
                 return [2 /*return*/];
         }
     });
 }); });
-// async function main(): Promise<any> {
-//     let index = await getFile("index.html");
-//     console.log(index);
-// }
+function ssr() {
+    return __awaiter(this, void 0, void 0, function () {
+        var html_string, dom, react_app;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log("aa");
+                    return [4 /*yield*/, getFile("index.html")];
+                case 1:
+                    html_string = _a.sent();
+                    console.log("ii");
+                    dom = new jsdom.JSDOM(html_string);
+                    console.log("uu");
+                    react_app = dom.window.document.getElementById("react-app");
+                    console.log("ee");
+                    react_app.textContent = "今日は雨です";
+                    console.log("oo");
+                    return [2 /*return*/, dom.serialize()];
+            }
+        });
+    });
+}
 function getFile(path) {
     return new Promise(function (resolve, error) {
         fs.readFile(path, "utf8", function (err, data) {
