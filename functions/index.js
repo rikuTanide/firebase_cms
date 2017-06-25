@@ -37,40 +37,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 exports.__esModule = true;
 var functions = require("firebase-functions");
-var admin = require("firebase-admin");
+var http = require("https");
+var index_1 = require("./render/index");
 var fs = require("fs");
 var jsdom = require("jsdom");
-var index_1 = require("./render/index");
-var serviceAccount = require("./private/isyumi-blog2-firebase-adminsdk-3wyka-395e1d3821.json");
 exports.index = functions.https.onRequest(function (request, response) { return __awaiter(_this, void 0, void 0, function () {
-    var db, val;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+    var _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
-                admin.initializeApp({
-                    credential: admin.credential.cert(serviceAccount),
-                    databaseURL: "https://isyumi-blog2.firebaseio.com/"
-                });
-                db = admin.database();
-                return [4 /*yield*/, db.ref("/").once("value")];
+                _b = (_a = response).send;
+                return [4 /*yield*/, ssr()];
             case 1:
-                val = (_a.sent()).val();
-                response.send(val);
+                _b.apply(_a, [_c.sent()]);
                 return [2 /*return*/];
         }
     });
 }); });
 function ssr() {
     return __awaiter(this, void 0, void 0, function () {
-        var html_string, dom, react_app;
+        var json, articles, book_reviews, b, tech_reviews, b, html_string, dom, react_app;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, getFile("index.html")];
+                case 0: return [4 /*yield*/, getHTTP("https://isyumi-blog2.firebaseio.com/.json")];
                 case 1:
+                    json = _a.sent();
+                    articles = {
+                        book_reviews: [],
+                        tech_reviews: []
+                    };
+                    book_reviews = json["book_reviews"];
+                    for (b in book_reviews) {
+                        articles.book_reviews.push({
+                            id: b,
+                            datetime: book_reviews[b]["datetime"],
+                            title: book_reviews[b]["title"],
+                            body: book_reviews[b]["body"]
+                        });
+                    }
+                    tech_reviews = json["tech_reviews"];
+                    for (b in tech_reviews) {
+                        articles.tech_reviews.push({
+                            id: b,
+                            datetime: tech_reviews[b]["datetime"],
+                            title: tech_reviews[b]["title"],
+                            body: tech_reviews[b]["body"]
+                        });
+                    }
+                    return [4 /*yield*/, getFile("index.html")];
+                case 2:
                     html_string = _a.sent();
                     dom = new jsdom.JSDOM(html_string);
                     react_app = dom.window.document.getElementById("react-app");
-                    react_app.innerHTML = index_1.IndexComponent.toString();
+                    react_app.innerHTML = index_1.IndexComponent.toString(articles);
                     return [2 /*return*/, dom.serialize()];
             }
         });
@@ -83,7 +102,23 @@ function getFile(path) {
         });
     });
 }
-// ssr().then((d) => {
+function getHTTP(path) {
+    return new Promise(function (resolve, error) {
+        http.get(path, function (res) {
+            res.setEncoding('utf8');
+            var body = "";
+            res.on("data", function (d) {
+                body += d;
+            });
+            res.on('end', function () {
+                resolve(JSON.parse(body));
+            });
+        });
+    });
+}
+// ssr().then(async (d) => {
 //     console.log(d);
 //     process.exit();
-// }); 
+// }).catch(e => {
+//     console.log(e)
+// });
