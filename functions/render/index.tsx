@@ -36,7 +36,31 @@ export class IndexComponent extends React.Component<Articles, {}> {
 
 }
 
+export class TechReviewComponent extends React.Component<TechReview, {}> {
+    render() {
+        let props = this.props as TechReview;
+        return <div>
+            <a href="/"><h1>弩ブログ {props.title}</h1></a>
+            <div dangerouslySetInnerHTML={{__html: props.body}}/>
+            <time>{props.datetime}</time>
+        </div>;
+    }
+
+    static toString(article: TechReview): string {
+        return renderToString(<TechReviewComponent {...article}/>)
+    }
+
+}
+
+export interface TechReview {
+    id: string, datetime: string, title: string, body: string,
+}
+
+export interface BookReviews {
+    id: string, datetime: string, title: string, body: string,
+}
+
 export interface Articles {
-    tech_reviews: { id: string, datetime: string, title: string, body: string, }[];
-    book_reviews: { id: string, datetime: string, title: string, body: string, }[];
+    tech_reviews: TechReview[];
+    book_reviews: BookReviews[];
 }

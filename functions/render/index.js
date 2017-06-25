@@ -37,6 +37,8 @@ var IndexComponent = (function (_super) {
                 React.createElement("a", { href: "/book_reviews/" + b.id }, b.title));
         });
         return React.createElement("div", null,
+            React.createElement("h1", null, "\u5F29\u30D6\u30ED\u30B0"),
+            React.createElement("h2", null, "\u8A18\u4E8B\u4E00\u89A7"),
             React.createElement("dl", null,
                 React.createElement("dt", null, "\u6280\u8853\u8A55\u8AD6"),
                 React.createElement("dd", null,
@@ -52,3 +54,24 @@ var IndexComponent = (function (_super) {
     return IndexComponent;
 }(React.Component));
 exports.IndexComponent = IndexComponent;
+var TechReviewComponent = (function (_super) {
+    __extends(TechReviewComponent, _super);
+    function TechReviewComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TechReviewComponent.prototype.render = function () {
+        var props = this.props;
+        return React.createElement("div", null,
+            React.createElement("a", { href: "/" },
+                React.createElement("h1", null,
+                    "\u5F29\u30D6\u30ED\u30B0 ",
+                    props.title)),
+            React.createElement("div", { dangerouslySetInnerHTML: { __html: props.body } }),
+            React.createElement("time", null, props.datetime));
+    };
+    TechReviewComponent.toString = function (article) {
+        return server_1.renderToString(React.createElement(TechReviewComponent, __assign({}, article)));
+    };
+    return TechReviewComponent;
+}(React.Component));
+exports.TechReviewComponent = TechReviewComponent;
