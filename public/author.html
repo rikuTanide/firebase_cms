@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>編集画面</title>
+
+    <style>
+        .flex-container {
+            display: -webkit-inline-flex; /* Safari */
+            display: inline-flex;
+        }
+
+        .title-list {
+            max-width: 300px;
+            padding-right: 20px;
+            word-break: break-all;
+        }
+
+        .edit-area {
+            width: 100%;
+            height: 100%;
+        }
+
+        input[type="text"]{
+            width: 500px;
+
+        }
+
+        textarea {
+            width: 500px;
+            height: 1000px;
+
+        }
+
+    </style>
+
+
+</head>
+<body>
+
+<div class="flex-container">
+    <div class="title-list">
+        <dl>
+            <dt>技術評論</dt>
+            <dd>
+                <ul id="tech-review-list"></ul>
+            </dd>
+        </dl>
+        <button id="add-tech">技評追加</button>
+        <dl>
+            <dt>書籍評論</dt>
+            <dd>
+                <ul id="book-review-list"></ul>
+            </dd>
+        </dl>
+        <button id="add-book">書評追加</button>
+    </div>
+    <div class="edit-area">
+        <div>
+            <button id="save">保存</button>
+        </div>
+        <input type="text" id="title"/><br>
+        <textarea id="body"></textarea>
+    </div>
+
+</div>
+<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
+<script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyACdKDnZ1ZiDsHMHkMxEpSNrCMyCvXaXII",
+        authDomain: "isyumi-blog2.firebaseapp.com",
+        databaseURL: "https://isyumi-blog2.firebaseio.com",
+        projectId: "isyumi-blog2",
+        storageBucket: "isyumi-blog2.appspot.com",
+        messagingSenderId: "247779558159"
+    };
+    firebase.initializeApp(config);
+</script>
+<script src="/index.js"></script>
+</body>
+</html>

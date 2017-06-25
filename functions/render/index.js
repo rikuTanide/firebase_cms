@@ -27,11 +27,12 @@ var IndexComponent = (function (_super) {
     }
     IndexComponent.prototype.render = function () {
         var props = this.props;
-        props.tech_reviews.sort(function (a, b) { return a > b ? -1 : 1; });
+        props.tech_reviews.sort(function (a, b) { return a.datetime > b.datetime ? -1 : 1; });
         var tech_reviews = props.tech_reviews.map(function (t) {
             return React.createElement("li", { key: t.id },
                 React.createElement("a", { href: "/tech_reviews/" + t.id }, t.title));
         });
+        props.book_reviews.sort(function (a, b) { return a.datetime > b.datetime ? -1 : 1; });
         var book_reviews = props.book_reviews.map(function (b) {
             return React.createElement("li", { key: b.id },
                 React.createElement("a", { href: "/book_reviews/" + b.id }, b.title));

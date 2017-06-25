@@ -16,6 +16,10 @@
       {
         "source": "/book_reviews/**",
         "function": "book_reviews"
+      },
+      {
+        "source": "/edit/**",
+        "destination": "/author.html"
       }
     ]
   }
