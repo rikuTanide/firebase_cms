@@ -37,18 +37,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 exports.__esModule = true;
 var functions = require("firebase-functions");
+var admin = require("firebase-admin");
 var fs = require("fs");
 var jsdom = require("jsdom");
 var index_1 = require("./render/index");
+var serviceAccount = require("./private/isyumi-blog2-firebase-adminsdk-3wyka-395e1d3821.json");
 exports.index = functions.https.onRequest(function (request, response) { return __awaiter(_this, void 0, void 0, function () {
-    var _a, _b;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var db, val;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _b = (_a = response).send;
-                return [4 /*yield*/, ssr()];
+                admin.initializeApp({
+                    credential: admin.credential.cert(serviceAccount),
+                    databaseURL: "https://isyumi-blog2.firebaseio.com/"
+                });
+                db = admin.database();
+                return [4 /*yield*/, db.ref("/").once("value")];
             case 1:
-                _b.apply(_a, [_c.sent()]);
+                val = (_a.sent()).val();
+                response.send(val);
                 return [2 /*return*/];
         }
     });
