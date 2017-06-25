@@ -70,6 +70,20 @@ exports.tech_reviews = functions.https.onRequest(function (request, response) { 
         }
     });
 }); });
+exports.book_reviews = functions.https.onRequest(function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+    var id, _a, _b;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                id = url.parse(request.url).pathname.split("/")[2];
+                _b = (_a = response).send;
+                return [4 /*yield*/, book_review(id)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [2 /*return*/];
+        }
+    });
+}); });
 function tech_review(id) {
     return __awaiter(this, void 0, void 0, function () {
         var article, html_string, dom, react_app;
@@ -84,8 +98,31 @@ function tech_review(id) {
                     html_string = _a.sent();
                     dom = new jsdom.JSDOM(html_string);
                     dom.window.document.title = "弩ブログ " + article.title;
+                    dom.window.document.getElementsByTagName("link")[0].setAttribute("href", "/tech_reviews/" + id);
                     react_app = dom.window.document.getElementById("react-app");
                     react_app.innerHTML = index_1.TechReviewComponent.toString(article);
+                    return [2 /*return*/, dom.serialize()];
+            }
+        });
+    });
+}
+function book_review(id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var article, html_string, dom, react_app;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, getHTTP("https://isyumi-blog2.firebaseio.com/book_reviews/" + id + ".json")];
+                case 1:
+                    article = _a.sent();
+                    article.body = markdown.markdown.toHTML(article.body);
+                    return [4 /*yield*/, getFile("index.html")];
+                case 2:
+                    html_string = _a.sent();
+                    dom = new jsdom.JSDOM(html_string);
+                    dom.window.document.title = "弩ブログ " + article.title;
+                    dom.window.document.getElementsByTagName("link")[0].setAttribute("href", "/book_reviews/" + id);
+                    react_app = dom.window.document.getElementById("react-app");
+                    react_app.innerHTML = index_1.BookReviewComponent.toString(article);
                     return [2 /*return*/, dom.serialize()];
             }
         });
@@ -154,12 +191,9 @@ function getHTTP(path) {
         });
     });
 }
-tech_review("HkK3f7RZ9bZ51OlV").then(function (d) { return __awaiter(_this, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        console.log(d);
-        process.exit();
-        return [2 /*return*/];
-    });
-}); })["catch"](function (e) {
-    console.log(e);
-});
+// tech_review("HkK3f7RZ9bZ51OlV").then(async (d) => {
+//     console.log(d);
+//     process.exit();
+// }).catch(e => {
+//     console.log(e)
+// });

@@ -12,6 +12,10 @@
       {
         "source": "/tech_reviews/**",
         "function": "tech_reviews"
+      },
+      {
+        "source": "/book_reviews/**",
+        "function": "book_reviews"
       }
     ]
   }

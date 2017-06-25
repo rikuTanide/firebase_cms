@@ -4,10 +4,12 @@ import {renderToString} from 'react-dom/server';
 export class IndexComponent extends React.Component<Articles, {}> {
     render() {
         let props = this.props as Articles;
-        props.tech_reviews.sort((a, b) => a > b ? -1 : 1);
+        props.tech_reviews.sort((a, b) => a.datetime > b.datetime ? -1 : 1);
         let tech_reviews = props.tech_reviews.map(t => {
             return <li key={t.id}><a href={"/tech_reviews/" + t.id}>{t.title}</a></li>
         });
+
+        props.book_reviews.sort((a, b) => a.datetime > b.datetime ? -1 : 1);
         let book_reviews = props.book_reviews.map(b => {
             return <li key={b.id}><a href={"/book_reviews/" + b.id}>{b.title}</a></li>
         });
@@ -40,7 +42,8 @@ export class TechReviewComponent extends React.Component<TechReview, {}> {
     render() {
         let props = this.props as TechReview;
         return <div>
-            <a href="/"><h1>弩ブログ {props.title}</h1></a>
+            <a href="/"><h1>弩ブログ</h1></a>
+            <h2>{props.title}</h2>
             <div dangerouslySetInnerHTML={{__html: props.body}}/>
             <time>{props.datetime}</time>
         </div>;
@@ -49,8 +52,25 @@ export class TechReviewComponent extends React.Component<TechReview, {}> {
     static toString(article: TechReview): string {
         return renderToString(<TechReviewComponent {...article}/>)
     }
-
 }
+
+export class BookReviewComponent extends React.Component<BookReviews, {}> {
+    render() {
+        let props = this.props as BookReviews;
+        return <div>
+            <a href="/"><h1>弩ブログ</h1></a>
+            <h2>{props.title}</h2>
+            <div dangerouslySetInnerHTML={{__html: props.body}}/>
+            <time>{props.datetime}</time>
+        </div>;
+    }
+
+    static toString(article: BookReviews): string {
+        return renderToString(<BookReviewComponent {...article}/>)
+    }
+}
+
+
 
 export interface TechReview {
     id: string, datetime: string, title: string, body: string,

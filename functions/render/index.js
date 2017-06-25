@@ -63,9 +63,8 @@ var TechReviewComponent = (function (_super) {
         var props = this.props;
         return React.createElement("div", null,
             React.createElement("a", { href: "/" },
-                React.createElement("h1", null,
-                    "\u5F29\u30D6\u30ED\u30B0 ",
-                    props.title)),
+                React.createElement("h1", null, "\u5F29\u30D6\u30ED\u30B0")),
+            React.createElement("h2", null, props.title),
             React.createElement("div", { dangerouslySetInnerHTML: { __html: props.body } }),
             React.createElement("time", null, props.datetime));
     };
@@ -75,3 +74,23 @@ var TechReviewComponent = (function (_super) {
     return TechReviewComponent;
 }(React.Component));
 exports.TechReviewComponent = TechReviewComponent;
+var BookReviewComponent = (function (_super) {
+    __extends(BookReviewComponent, _super);
+    function BookReviewComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    BookReviewComponent.prototype.render = function () {
+        var props = this.props;
+        return React.createElement("div", null,
+            React.createElement("a", { href: "/" },
+                React.createElement("h1", null, "\u5F29\u30D6\u30ED\u30B0")),
+            React.createElement("h2", null, props.title),
+            React.createElement("div", { dangerouslySetInnerHTML: { __html: props.body } }),
+            React.createElement("time", null, props.datetime));
+    };
+    BookReviewComponent.toString = function (article) {
+        return server_1.renderToString(React.createElement(BookReviewComponent, __assign({}, article)));
+    };
+    return BookReviewComponent;
+}(React.Component));
+exports.BookReviewComponent = BookReviewComponent;
